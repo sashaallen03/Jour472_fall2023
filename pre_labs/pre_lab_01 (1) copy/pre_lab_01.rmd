@@ -152,7 +152,7 @@ umd_courses |>
   arrange(desc(count_classes))
 ```
 
-Compared to the previous codeblock, what has changed and how did that affect the result? **Answer**
+Compared to the previous codeblock, what has changed and how did that affect the result? **Answer: the first rows do the same thing as the previous code, but I think the last line is arranging the results of the count_classes in descending order from greatest to least.**
 
 ### Task 11: Grouping by multiple columns
 
@@ -169,7 +169,7 @@ umd_courses |>
 
 Compared to the previous codeblock, how did the output change and what in the code changed it?
 
-**Answer**
+**Answer: The last line organizes the classes in alphabetical order by department name**
 
 ### Task 12: Other summary functions
 
@@ -185,7 +185,7 @@ umd_courses |>
   arrange(desc(total_seats))
 ```
 
-Compared to the previous codeblock, what has changed and how did that affect the result? **Answer**
+Compared to the previous codeblock, what has changed and how did that affect the result? **Answer: The last line of the code organizes the results by number of seats, in descending order from greatest number of seats in the classes to least number of seats. I think the 4th line of code adds up the total number of seats, and the 5th line arranges them in descending order based on the numbers. This changed the organization to the number of seats.**
 
 ### Task 13: different kinds of summarizations
 
@@ -203,7 +203,7 @@ umd_courses |>
   arrange(desc(total_seats))
 ```
 
-Compared to the previous codeblock, what has changed and how did that affect the result? What do the top terms have in common? **Answer**
+Compared to the previous codeblock, what has changed and how did that affect the result? What do the top terms have in common? **Answer: This code is organized by total number of seats in descending order, which is what the last line of code deals with. The other lines of code that are not the same add in the other factors to the chart (class count, mean seats, and median seats). Mean seats and median seats calculates the mean and median seats using total seats. The top terms are the same just with more information given.**
 
 ### Task 14: more aggregations
 
@@ -217,15 +217,15 @@ umd_courses |>
     total_seats = sum(seats),
     mean_seats = mean(seats),
     median_seats = median(seats),
-    # add minimum seats here
-    # add maximum seats here
+    minimum_seats = min(seats),
+    maximum_seats = max(seats),
   ) |>
   arrange(desc(total_seats))
 ```
 
 Compared to the previous codeblock, what has changed and how did that affect the result? How is the data sorted?
 
-**Answer**
+**Answer: I changed it so that the minimum and maximum seats are shown, which adds different rows. It calculates it using the data. The rest of the set is the same, and is organized in descending order by number of seats.**
 
 ### Task 12: Questions
 
