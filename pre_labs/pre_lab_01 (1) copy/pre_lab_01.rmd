@@ -233,8 +233,8 @@ No code here; I want you to provide three questions that this data suggests to y
 
 **Answer**
 
-1.  
+1.  I would like to ask it to sort by department and then in descending order for number of seats
 
-2.  
+2.  Sort by median versus mean number of seats and then compare
 
-3.  
+3.  Sort by maximum number of seats and see what department has the most seats
