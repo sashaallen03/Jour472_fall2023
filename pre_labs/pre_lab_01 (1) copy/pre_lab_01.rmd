@@ -233,8 +233,8 @@ No code here; I want you to provide three questions that this data suggests to y
 
 **Answer**
 
-1.  I would like to ask it to sort by department and then in descending order for number of seats
+1.  Do number of seats in each class correspond with the number of sections offered?
 
-2.  Sort by median versus mean number of seats and then compare
+2.  Is there a difference when you sort between median number of seats versus when you sort by mean number of seats per department?
 
-3.  Sort by maximum number of seats and see what department has the most seats
+3.  Do departments with more classes offer more seats?
