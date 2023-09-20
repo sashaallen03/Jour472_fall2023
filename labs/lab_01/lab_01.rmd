@@ -56,9 +56,10 @@ umd_courses |>
 
 ```{r}
 umd_courses |>
-  group_by(department) |>
+  group_by(id, department) |>
   summarise(
     count_classes = n(),
+    
   ) |>
   arrange(desc(count_classes))
 ```
@@ -71,10 +72,10 @@ umd_courses |>
   summarise(
     count_classes = n(),
   ) |>
-  arrange(desc(count_classes))
+  arrange(desc(count_classes)) |> na.omit()
 ```
 
-**Q4** Given the results for Q3, what would have made it easier to find the answer? You don't have to know *how* to accomplish this; I want you to describe in words what would make the answer easier to see. How confident are you that the answer you got is the right one, and why? **A4: It would have made it easier to get rid of the NA and the TBD answers, and I think if we were able to include department name without sorting by department name it would have made it easier to find who taught the most total courses, regardless of department.**
+**Q4** Given the results for Q3, what would have made it easier to find the answer? You don't have to know *how* to accomplish this; I want you to describe in words what would make the answer easier to see. How confident are you that the answer you got is the right one, and why? **A4: It would have made it easier to get rid of the NA and the TBD answers, and I think if we were able to include department name without sorting by department name it would have made it easier to find who taught the most total courses, regardless of department. \|\> na.omit()**
 
 **Q5** Take one of the questions you listed in the final question of the pre_lab and try to answer it here in code. If you don't know how to fully answer it, write what code you can and describe in words what else you would need to do. If you got an answer, is it interesting? **A5** Do departments with more classes offer more seats?
 
