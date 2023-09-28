@@ -67,10 +67,10 @@ umd_courses |>
 ```{r}
 maryland_expenses |>
   mutate(expenditure_date = mdy(expenditure_date)) |>
-  mutate(month = floor_date(expentditure_date, "month")) |>
+  mutate(month = floor_date(expenditure_date, "month")) |>
   group_by(month) |>
-  filter(str_detect(committee_name, "Moore Wes For Maryland")) |>
-  summarise(total_amount = sum(amound)) |>
+  filter(str_detect(committee_name, "Moore  Wes For Maryland")) |>
+  summarise(total_amount = sum(amount)) |>
   arrange(month)
 ```
 
