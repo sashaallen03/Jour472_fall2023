@@ -88,29 +88,46 @@ write_csv(media_expenses, "data/media_expenses.csv")
 ```{r}
 # read the cleaned CSV 
 # calculate top Facebook spenders
+media_expenses_clean <- read_csv('data/media_expenses_clean.csv')
 
+# media_expenses_clean |> group_by(payee_name) |> summarize(sum(amount))
+
+media_expenses_clean |> filter(str_detect(payee_name, 'Facebook')) |>
+  group_by(committee_name) |>
+  summarize(total_amount = sum(amount)) |>
+  arrange(desc(total_amount))
 ```
 
 **Q2.** Let's do some research on the top committees from question 1. Look up the top 10 spenders: if they are candidate committees, what offices were they running for? If they were not candidates, what issues do they seem to care about? Write some sentences answering those questions, then go the Facebook ad library ([https://www.facebook.com/ads/library/?active_status=all&ad_type=political_and_issue_ads&country=US&sort_data\\[direction\\]=desc&sort_data\\[mode\\]=relevancy_monthly_grouped&media_type=all](https://www.facebook.com/ads/library/?active_status=all&ad_type=political_and_issue_ads&country=US&sort_data%5Bdirection%5D=desc&sort_data%5Bmode%5D=relevancy_monthly_grouped&media_type=all){.uri}) and look for ads from the top spender. What do you notice about those ads?
 
-**A2.**
+**A2. The spenders who were spending more money were running for governor or the House/Senate, but all spenders at the top were political. There were also spenders paying for ads to support a cause, but these spenders bought less ads.**
 
 **Q3.** Given the list of top spenders in A1 and the primary results for governor (<https://elections.maryland.gov/elections/2022/primary_results/gen_results_2022_1.html>), who is missing from that A1 list? Did those campaigns run Facebook ads, according to Facebook's ad library? Who are the biggest recipients of media expenses by the Democratic primary winner for governor (HINT: that person has two committees)?
 
-**A3.**
+**A3. Big politicians like Wes Moore and Tom Perez are not listed, which is interesting considering they had lots of facebook ads. In reality, Moore was one of the biggest payers in general for expenses.**
 
 ```{r}
+media_expenses_clean |>
+  group_by(amount, committee_name) |>
+  summarize(total_amount =sum(amount)) |>
+  arrange(desc(total_amount))
 
 ```
 
 **Q4.** The media expense data you cleaned also has a standardized purpose column. Write code to generate a list of the committees with the total amount of spending on online advertising. How does this list compare to the one from Q1 about top Facebook spenders? Of the top 5 committees who spent the most on Facebook ads from Q1, are there any that appear to have spent *all* of their online advertising dollars on Facebook?
 
-**A4.**
+**A4. The list is different, because it includes more than just facebook funding and changes the order. The top spenders on FB advertising are not the top overall spenders on online advertising. However, some of the top spenders of FB spending seem to have only spent their money on FB ads.**
 
 ```{r}
-
+media_expenses_clean |>
+  filter(str_detect(expense_purpose, 'Online Advertising')) |>
+  group_by(committee_name, payee_name) |>
+  summarize(total_amount = sum(amount)) |>
+  arrange(desc(total_amount))
+  
+  
 ```
 
 **Q5** You've been asked to summarize your findings about spending on Facebook by Maryland political candidates. How much do we know and what don't we know? What's the best story idea you've found here?
 
-**A5**
+**A5 I have noticed that the candidates running for larger seats spend more money on ads which does make sense, but that the amount of money spent does not necessarily dictate who wins or loses. For example . I think that there could be a good story out of why some of the campaigns only use facebook, or a breakdown of the top spenders and their advertising, particularly online, and compare it to age demographics of each site. Then, we could rope in the winners and losers as well and compare that to the data. We know a lot about the funding, but not about what every person ran for because of the names. We would have to look that up, but it would be interesting to take into account.**
