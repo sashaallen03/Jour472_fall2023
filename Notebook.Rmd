@@ -1,0 +1,41 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code.
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Cmd+Shift+Enter*.
+
+```{r}
+library(tidyverse)
+
+library(readr)
+homicide_data <- read_csv("data/homicide_data.csv") 
+
+homicide_data <- homicide_data |>
+  mutate(reported_date = ymd(reported_date))
+
+View(homicide_data)
+```
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file).
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+
+**\"As Baltimore has seen a stunning surge of violence, with nearly a killing each day for the past three years in a city of 600,000, homicide arrests have plummeted."**
+
+```{r}
+bmore_homicide_data |>
+  mutate(reported_date =ymd(reported_date)) |>
+  mutate(year = year(reported_date)) |>
+  filter(str_detect(city, 'Baltimore')) |>
+  filter(year == '2017' | year == '2016' | year == '2015') |>
+  group_by(year) |>
+  summarize(
+    count = n(),
+    average_per_day = (count/365)
+  )
+```
