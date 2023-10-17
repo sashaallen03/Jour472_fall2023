@@ -61,7 +61,7 @@ Q1. Write code to generate the number of calls that occurred on each date. Which
 A1. There are 327 rows, and 7/14 and 10/04 had the highest number of overdose calls. I do not think there are any days with no overdose calls because there are over 365 calls, but there very well could be many on a single day
 
 ```{r}
-baltco_911_overdose_calls |>
+baltco_911_overdose_calls  |>
   filter(str_detect(date, '2022')) |>
   group_by(date) |>
   summarize(total_calls = n())|>
@@ -74,7 +74,7 @@ Q2. You want to understand if there's a pattern in the day of the week that over
 A2. It is less in the middle of the week, but peaks on the weekend and on Monday
 
 ```{r}
-baltco_911_overdose_calls <- baltco_911_overdose_calls |>
+baltco_911_overdose_calls_dayofweek <- baltco_911_overdose_calls |>
   mutate(day_of_week = wday(date))  
   
 baltco_911_overdose_calls_dayofweek |>
@@ -86,13 +86,15 @@ baltco_911_overdose_calls_dayofweek |>
 
 Q3. Now let's look at locations. Which ones have the most calls? How would you describe them (feel free to search for more information on them)? Is there anything about the structure of the original data that might make you less confident in the counts by location or date?
 
-A3.
+A3. Silver Spring has the most calls, at 36. I think that the structure of the data being exact addresses worries me in terms of how accurate the location is, because if we had a bit less specific location it could be grouped differently.
 
 ```{r}
-
-  
+baltco_911_overdose_calls |>
+  group_by(location) |>
+  summarize(total_calls = n())|>
+  arrange(desc(total_calls))
 ```
 
 Q4. What's the best story idea or question you've seen as a result of the work you've done in this lab?
 
-A4.
+A4. I think that it would be interesting to look into the locations more in depth, and figure out the causes of why there are so many incidents in 450 silver spring road/ what's going on there.
