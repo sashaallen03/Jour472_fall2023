@@ -147,7 +147,7 @@ maryland_population_with_voters_and_demographics |>
 
 Sometimes joins look like they should work but don't. Often this is due to the two columns you're joining on having different data types: joining a <chr> column to a <dbl> column, for example. Let's walk through an example of that using some demographic data by zip code.
 
-**Task** Run the following code to load the Zip Code Tabulation Area data for Maryland. What's the datatype of the ZCTA5N column? **Answer**
+**Task** Run the following code to load the Zip Code Tabulation Area data for Maryland. What's the datatype of the ZCTA5N column? **Answer The datatype is zipcode presented in the form of a string.**
 
 ```{r}
 maryland_zcta <- read_csv('data/maryland_zcta.csv')
@@ -156,10 +156,11 @@ glimpse(maryland_zcta)
 
 The column we're interested in, ZCTA5N, is a <dbl> column - it's a number. We want it to be a <chr> column - text.
 
-**Task** Run the following code to change the datatype of ZCTA5N from numeric to character. What's the datatype of ZCTA5N? **Answer**
+**Task** Run the following code to change the datatype of ZCTA5N from numeric to character. What's the datatype of ZCTA5N? **Answer: The datatype of the zipcode was numbers, I am a little confused about what changed.**
 
 ```{r}
 maryland_zcta <- maryland_zcta |> mutate(ZCTA5N = as.character(ZCTA5N))
+glimpse(maryland_zcta)
 ```
 
 Now we can join this dataframe to other zip code data where the zip code column is text, not numbers.
