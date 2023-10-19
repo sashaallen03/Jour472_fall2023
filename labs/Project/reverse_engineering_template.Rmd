@@ -70,7 +70,7 @@ homicide_data |>
 
 ### Sentence 2
 
--   **Of 50 of the nation\'s largest cities, Baltimore is one of 34 where police now make homicide arrests less often than in 2014, according to a Washington Post analysis.**
+-   **Of 50 of the nation's largest cities, Baltimore is one of 34 where police now make homicide arrests less often than in 2014, according to a Washington Post analysis.**
 -   **We could only find 14 instead of 24, and aren't sure what the issue with that is. NY is difficult because they didn't provide data for all the years.**
 
 ```{r}
