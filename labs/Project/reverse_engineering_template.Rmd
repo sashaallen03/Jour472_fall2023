@@ -136,27 +136,6 @@ homicide_data_combined <- homicide_count_2017 |>
 homicide_data_combined
 ```
 
-```{r}
-homicide_count_2012 <- homicide_data |>
-  filter(year == "2012") |>
-  group_by(city) |>
-  summarize(homicide_count_2012 = n())
-
-homicide_count_2017 <- homicide_data |>
-  filter(year == "2017") |>
-  group_by(city) |>
-  summarize(homicide_count_2017 = n())
-
-homicide_data_combined <- homicide_count_2017|>
-  left_join(homicide_count_2012) |>
-  filter(city != "New York") |>
-  mutate(raw_number_increase = homicide_count_2017 - homicide_count_2012)|>
-  arrange(desc(raw_number_increase))
-
-# Display results of code below this codeblock
-homicide_data_combined
-```
-
 ### Sentence 4
 
 -   **Sentence text**: **For most of the decade before 2015, Baltimore\'s annual homicide arrest rate hovered at about 40 percent. Since 2015, the arrest rate hasn\'t topped 30 percent in any year.**
