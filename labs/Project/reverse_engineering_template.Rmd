@@ -136,13 +136,7 @@ homicide_data_combined <- homicide_count_2017 |>
 homicide_data_combined
 ```
 
-### Sentence 4
-
--   **"For most of the decade before 2015, Baltimore's annual homicide arrest rate hovered at about 40 percent. Since 2015, the arrest rate hasn't topped 30 percent in any year."**
--   **Analysis summary**: [Write up two to three sentences describing the results of your analysis. Were you able to confirm the finding? If not, why not?]
-
 ```{r}
-#For most of the decade before 2015, Baltimore’s annual homicide arrest rate hovered at about 40 percent. Since 2015, the arrest rate hasn’t topped 30 percent in any year.
 homicide_count_2012 <- homicide_data |>
   filter(year == "2012") |>
   group_by(city) |>
@@ -165,9 +159,9 @@ homicide_data_combined
 
 ### Sentence 4
 
--   **Sentence text**: [Paste in sentence to engineer here]
+-   **Sentence text**: **For most of the decade before 2015, Baltimore\'s annual homicide arrest rate hovered at about 40 percent. Since 2015, the arrest rate hasn\'t topped 30 percent in any year.**
 
--   **Analysis summary**: [Write up two to three sentences describing the results of your analysis. Were you able to confirm the finding? If not, why not?]
+-   **Analysis summary**: We were able to confirm the finding. The arrest rate stayed below 30% after 2015, when it used to be much higher.
 
     ```{r}
     baltimore_arrests_by_year <- homicide_data |>
@@ -186,7 +180,25 @@ homicide_data_combined
       mutate(arrest_rate = (arrests/homicides)*100)
 
     # Display results of code below this codeblock
-    baltimore_arrests_by_year
+    baltimore_arrest_rate
     ```
+
+### Sentence 5
+
+-   **Sentence text**: **Of the 1,002 homicides between 2015 and the beginning of this year, just 252 --- one out of every four --- resulted in an arrest.**
+
+-   **Analysis summary**: We were able to confirm the finding. We found that there are roughly 1/4 arrests for every homicide from 2015-2018, with an exact percentage of 25.1497% of homicides resulting in arrests. This shows that there are less arrests occuring.
+
+```{r}
+recent_baltimore_homicides <- homicide_data |>
+  filter(city == "Baltimore") |>
+  filter(year == '2015' | year == '2016' | year == '2017' | year == '2018') 
+  
+total_arrest_count <- recent_baltimore_homicides|>
+    filter(disposition == "Closed by arrest")
+    
+
+nrow(total_arrest_count)/nrow(recent_baltimore_homicides)*100
+```
 
 -30-
