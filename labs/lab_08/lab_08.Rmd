@@ -7,7 +7,6 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-Sys.getenv("CENSUS_API_KEY")
 ```
 
 ## Load libraries and establish settings
@@ -127,11 +126,7 @@ pg_call_zip <- pg_call |>
   group_by(zipcode)|>
   summarize(zip_calls = n())
 
-md_data <- get_acs(geography = "ZCTA",
-                   variable=""
-                   year=2022,
-                   state="MD")
-
-
+md_median_income_zip <- get_acs(geography = "zcta", variable="B19013_001", year=2019, state="MD")
+  
 
 ```
