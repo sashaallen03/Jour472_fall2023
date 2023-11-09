@@ -138,7 +138,7 @@ homicide_data_combined
 
 ### Sentence 4
 
--   **Sentence text**: **For most of the decade before 2015, Baltimore\'s annual homicide arrest rate hovered at about 40 percent. Since 2015, the arrest rate hasn\'t topped 30 percent in any year.**
+-   **Sentence text**: **For most of the decade before 2015, Baltimore's annual homicide arrest rate hovered at about 40 percent. Since 2015, the arrest rate hasn't topped 30 percent in any year.**
 
 -   **Analysis summary**: We were able to confirm the finding. The arrest rate stayed below 30% after 2015, when it used to be much higher.
 

@@ -126,7 +126,21 @@ pg_call_zip <- pg_call |>
   group_by(zipcode)|>
   summarize(zip_calls = n())
 
-md_median_income_zip <- get_acs(geography = "zcta", variable="B19013_001", year=2019, state="MD")
+md_median_income_zip <- get_acs(geography = "zcta", variable="B19013_001", year=2019, state="MD")|>
+  rename(zipcode = GEOID, median_income = estimate)
+  
+joined_data <- pg_call_zip|>
+  left_join(md_median_income_zip, by == 'zipcode')|>
+  select(zipcode,total_calls, median_income, moe)
+  
+joined_data|>
+  ggplot(aes(x=median_income, y=total_calls)) + geom_point()+
+    labs(
+    title="Calls Per Week",
+    x = "Week",
+    y = "Number of Calls",
+  )
+
   
 
 ```
