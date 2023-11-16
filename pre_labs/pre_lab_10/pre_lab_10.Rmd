@@ -250,7 +250,7 @@ Ultimately, we're going to join this county table with population with foreclosu
 
 ### Task: Run code
 
-**Task** Run the following code. Describe the output in the space below. **Answer**
+**Task** Run the following code. Describe the output in the space below. **Answer: Below are the counties and their shapes and populations**
 
 ```{r}
 md_county_population <- get_acs(geography = "county",
@@ -270,7 +270,7 @@ But there's a problem. The column in our population data that has county names i
 
 ### Task: Run code
 
-**Task** Run the following code. Describe the output in the space below. **Answer**
+**Task** Run the following code. Describe the output in the space below. **Answer: This is a chart representing date, type, county, and \# of notices.**
 
 ```{r}
 md_county_population
@@ -284,7 +284,7 @@ Let's clean the population table. We're going to rename the "NAME" column to "co
 
 ### Task: Run code
 
-**Task** Run the following code. Describe the output in the space below. **Answer**
+**Task** Run the following code. Describe the output in the space below. **Answer: We have a similar output as before, creating the shape and population of the counties**
 
 ```{r}
 md_county_population <- md_county_population |>
@@ -301,11 +301,11 @@ Now we can join them!
 
 ### Task: Run code
 
-**Task** Run the following code. Describe the output in the space below. **Answer**
+**Task** Run the following code. Describe the output in the space below. **Answer: This shows the \# of foreclosures by county date and type**
 
 ```{r}
 md_pop_with_foreclosures <- md_county_population |>
-  left_join(md_county_notices, join_by(county))
+  left_join(md_county_notices, join_by('county'))
 
 md_pop_with_foreclosures
 ```
@@ -314,7 +314,7 @@ Our final step before visualization, let's calculate the number of foreclosure n
 
 ### Task: Run code
 
-**Task** Run the following code. Describe the output in the space below. **Answer**
+**Task** Run the following code. Describe the output in the space below. **Answer: this just joins the code and creates a complete list with types of notices**
 
 ```{r}
 md_pop_with_foreclosures <- md_county_population |>
@@ -331,7 +331,7 @@ Okay, now let's visualize. We're going to build a choropleth map, with the color
 
 ### Task: Run code
 
-**Task** Run the following code. Describe the output in the space below. **Answer**
+**Task** Run the following code. Describe the output in the space below. **Answer: there is a map of md by county with rates based on color. it is a bit messy with the names of the counties.**
 
 ```{r}
 
@@ -349,7 +349,7 @@ This map is okay, but the color scale makes it hard to draw fine-grained differe
 
 ### Task: Run code
 
-**Task** Run the following code. Describe the output in the space below. **Answer**
+**Task** Run the following code. Describe the output in the space below. **Answer: There is a map with different colors, without county names based on forclosures**
 
 ```{r}
 ggplot() +
@@ -364,7 +364,7 @@ So let's change the color scale to a "log" scale, which will help us see those d
 
 ### Task: Run code
 
-**Task** Run the following code. Describe the output in the space below. What regional patterns do you see? **Answer**
+**Task** Run the following code. Describe the output in the space below. What regional patterns do you see? **Answer: There is a similar map with more decimals for \# of foreclosures, more specific color scheme**
 
 ```{r}
 ggplot() +
