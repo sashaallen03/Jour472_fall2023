@@ -21,9 +21,8 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r}
 # load libraries here
 library(tidyverse)
-library(janitor)
-md_gov_county <- read_csv("data/md_gov_county.csv")
-md_gov_county_18 <- read.csv("data/md_gov_county_18.csv")
+library(tidycensus)
+library(lubridate)
 ```
 
 
@@ -45,7 +44,12 @@ You MUST do the following things when answering this question:
 **A1.** 
 
 ```{r}
+md_gov_county <- read_csv("data/md_gov_county.csv")
+md_gov_county_18 <- read.csv("data/md_gov_county_18.csv")
 
+md_gov_county_join <- md_gov_county |>
+    left_join(md_gov_county_18, by == "County")|>
+  select(GEOID, Cox, Hogan)
 
 ```
 
