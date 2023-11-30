@@ -1760,11 +1760,11 @@ the chunk or by placing your cursor inside it and pressing
 <em>Cmd+Shift+Enter</em>.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI2luc3RhbGwucGFja2FnZXMoXCJ0aWR5dGV4dFwiKVxubGlicmFyeSh0aWR5dmVyc2UpXG5saWJyYXJ5KHRpZHl0ZXh0KVxubGlicmFyeShydmVzdClcbmxpYnJhcnkoamFuaXRvcilcbmxpYnJhcnkobHVicmlkYXRlKVxuYGBgIn0= -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI2luc3RhbGwucGFja2FnZXMoXCJ0aWR5dGV4dFwiKVxubGlicmFyeSh0aWR5dmVyc2UpXG5saWJyYXJ5KHRpZHl0ZXh0KVxubGlicmFyeShyZWFkcilcbmxpYnJhcnkoamFuaXRvcilcbmxpYnJhcnkobHVicmlkYXRlKVxuYGBgIn0= -->
 <pre class="r"><code>#install.packages(&quot;tidytext&quot;)
 library(tidyverse)
 library(tidytext)
-library(rvest)
+library(readr)
 library(janitor)
 library(lubridate)</code></pre>
 <!-- rnb-source-end -->
@@ -1772,9 +1772,47 @@ library(lubridate)</code></pre>
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubG9hbnNfZGF0YSA8LSByZWFkLmNzdiAoXCJkYXRhL21kX2xvYW5fZGF0YS5jc3ZcIilcbmFzLm51bWVyaWMoRmlzY2FsLlllYXIpXG5gYGAifQ== -->
+<pre class="r"><code>loans_data &lt;- read.csv (&quot;data/md_loan_data.csv&quot;)
+as.numeric(Fiscal.Year)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiRXJyb3I6IG9iamVjdCAnRmlzY2FsLlllYXInIG5vdCBmb3VuZFxuIn0= -->
+<pre><code>Error: object &#39;Fiscal.Year&#39; not found</code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Question: How has the amount of grants and loans handed out changed
+over time? (Since we have data since FY2009)?</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubG9hbnNfb3Zlcl90aW1lIDwtIGxvYW5zX2RhdGEgfD5cbiAgZ3JvdXBfYnkoRmlzY2FsLlllYXIpfD5cbiAgc3VtbWFyaXplKE51bWJlcl9vZl9Mb2Fuc19HcmFudHNfR2l2ZW4gPSBuKCkpXG4gIFxuICAjIGZpbHRlcihGaXNjYWwuWWVhciwgQW1vdW50LCBaaXAuQ29kZSl8PlxuICMgZ3JvdXBfYnkoRmlzY2FsLlllYXIpfD5cbiAgI3N1bW1hcml6ZShBbW91bnQgPSBuKCkpXG4gIFxuYGBgIn0= -->
+<pre class="r"><code>loans_over_time &lt;- loans_data |&gt;
+  group_by(Fiscal.Year)|&gt;
+  summarize(Number_of_Loans_Grants_Given = n())
+  
+  # filter(Fiscal.Year, Amount, Zip.Code)|&gt;
+ # group_by(Fiscal.Year)|&gt;
+  #summarize(Amount = n())
+  </code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubnVtYmVyX2xvYW5zX292ZXJfdGltZV9tb25leSA8LSBsb2Fuc19kYXRhfD5cbiAgZ3JvdXBfYnkoQW1vdW50KXw+XG4gIHN1bShBbW91bnQobikpfD5cbiAgZ3JvdXBfYnkoRmlzY2FsLlllYXIpXG5gYGAifQ== -->
+<pre class="r"><code>number_loans_over_time_money &lt;- loans_data|&gt;
+  group_by(Amount)|&gt;
+  sum(Amount(n))|&gt;
+  group_by(Fiscal.Year)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiRXJyb3IgaW4gQW1vdW50KG4pIDogY291bGQgbm90IGZpbmQgZnVuY3Rpb24gXCJBbW91bnRcIlxuIn0= -->
+<pre><code>Error in Amount(n) : could not find function &quot;Amount&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiUiBOb3RlYm9vayIKb3V0cHV0OiBodG1sX25vdGVib29rCi0tLQoKVGhpcyBpcyBhbiBbUiBNYXJrZG93bl0oaHR0cDovL3JtYXJrZG93bi5yc3R1ZGlvLmNvbSkgTm90ZWJvb2suIFdoZW4geW91IGV4ZWN1dGUgY29kZSB3aXRoaW4gdGhlIG5vdGVib29rLCB0aGUgcmVzdWx0cyBhcHBlYXIgYmVuZWF0aCB0aGUgY29kZS4gCgpUcnkgZXhlY3V0aW5nIHRoaXMgY2h1bmsgYnkgY2xpY2tpbmcgdGhlICpSdW4qIGJ1dHRvbiB3aXRoaW4gdGhlIGNodW5rIG9yIGJ5IHBsYWNpbmcgeW91ciBjdXJzb3IgaW5zaWRlIGl0IGFuZCBwcmVzc2luZyAqQ21kK1NoaWZ0K0VudGVyKi4gCgpgYGB7cn0KI2luc3RhbGwucGFja2FnZXMoInRpZHl0ZXh0IikKbGlicmFyeSh0aWR5dmVyc2UpCmxpYnJhcnkodGlkeXRleHQpCmxpYnJhcnkocnZlc3QpCmxpYnJhcnkoamFuaXRvcikKbGlicmFyeShsdWJyaWRhdGUpCmBgYAoKCmBgYHtyfQo=</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiUiBOb3RlYm9vayIKb3V0cHV0OiBodG1sX25vdGVib29rCi0tLQoKVGhpcyBpcyBhbiBbUiBNYXJrZG93bl0oaHR0cDovL3JtYXJrZG93bi5yc3R1ZGlvLmNvbSkgTm90ZWJvb2suIFdoZW4geW91IGV4ZWN1dGUgY29kZSB3aXRoaW4gdGhlIG5vdGVib29rLCB0aGUgcmVzdWx0cyBhcHBlYXIgYmVuZWF0aCB0aGUgY29kZS4KClRyeSBleGVjdXRpbmcgdGhpcyBjaHVuayBieSBjbGlja2luZyB0aGUgKlJ1biogYnV0dG9uIHdpdGhpbiB0aGUgY2h1bmsgb3IgYnkgcGxhY2luZyB5b3VyIGN1cnNvciBpbnNpZGUgaXQgYW5kIHByZXNzaW5nICpDbWQrU2hpZnQrRW50ZXIqLgoKYGBge3J9CiNpbnN0YWxsLnBhY2thZ2VzKCJ0aWR5dGV4dCIpCmxpYnJhcnkodGlkeXZlcnNlKQpsaWJyYXJ5KHRpZHl0ZXh0KQpsaWJyYXJ5KHJlYWRyKQpsaWJyYXJ5KGphbml0b3IpCmxpYnJhcnkobHVicmlkYXRlKQpgYGAKCmBgYHtyfQpsb2Fuc19kYXRhIDwtIHJlYWQuY3N2ICgiZGF0YS9tZF9sb2FuX2RhdGEuY3N2IikKIApNb29yZSA9IGNvbF9kb3VibGUoKQpjbGVhbl9uYW1lcwpgYGAKClF1ZXN0aW9uOiBIb3cgaGFzIHRoZSBhbW91bnQgb2YgZ3JhbnRzIGFuZCBsb2FucyBoYW5kZWQgb3V0IGNoYW5nZWQgb3ZlciB0aW1lPyAoU2luY2Ugd2UgaGF2ZSBkYXRhIHNpbmNlIEZZMjAwOSk/CgpgYGB7cn0KbnVtYmVyX2xvYW5zX292ZXJfdGltZSA8LSBsb2Fuc19kYXRhIHw+CiAgZ3JvdXBfYnkoRmlzY2FsLlllYXIpfD4KICBzdW1tYXJpemUoTnVtYmVyX29mX0xvYW5zX0dyYW50c19HaXZlbiA9IG4oKSkKYGBgCgpgYGB7cn0KbnVtYmVyX2xvYW5zX292ZXJfdGltZV9tb25leSA8LSBsb2Fuc19kYXRhfD4KICBncm91cF9ieShBbW91bnQpfD4KICBzdW0oQW1vdW50KG4pKXw+CiAgZ3JvdXBfYnkoRmlzY2FsLlllYXIpCiAgCmBgYAoK</div>
 
 
 
