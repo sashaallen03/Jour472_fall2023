@@ -14,28 +14,54 @@ library(tidytext)
 library(readr)
 library(janitor)
 library(lubridate)
+library(tidycensus)
 ```
 
 ```{r}
 loans_data <- read.csv ("data/md_loan_data.csv")
- 
-Moore = col_double()
 clean_names
+
+census_api_key("c4b6d5f557fdd710f546c349eadd47d75c37b8aa", install=TRUE, overwrite=TRUE)
+readRenviron("~/.Renviron")
+
+Sys.getenv("CENSUS_API_KEY")
 ```
 
-Question: How has the amount of grants and loans handed out changed over time? (Since we have data since FY2009)?
+Question: How has the amount of grants and loans handed out changed over time? (Since we have data since FY2009)
+
+Findings: We found that 2020 was the year that the most grants and loans were distributed, and where the most money was spent. This could be due to a surplus in government spending during the pandemic, because so many things were shut down.
+
+Limitations: could not filter by department because of varying department names
 
 ```{r}
-number_loans_over_time <- loans_data |>
+number_loans_overtime <- loans_data |>
   group_by(Fiscal.Year)|>
-  summarize(Number_of_Loans_Grants_Given = n())
+  summarize(Number_Given = n())
+
+amount_loans_over_time <- loans_data |>
+  group_by(Fiscal.Year)|>
+  summarize(Yearly_Sum = sum(Amount)) |>
+  arrange(Yearly_Sum)
+
+number_and_amount <- number_loans_overtime |>
+  left_join(amount_loans_over_time, by = "Fiscal.Year")
+
+```
+
+Question: What zip codes or counties receive the most grants from the state of Maryland and why?
+
+Limitations: Zipcodes include 6 and 9 digit codes
+
+```{r}
+zipcode_organization <- loans_data |>
+  group_by(Zip.Code)|>
+  summarize(Zip_Sum = sum(Amount)) |>
+  arrange(desc(Zip_Sum))
 ```
 
 ```{r}
-number_loans_over_time_money <- loans_data|>
-  group_by(Amount)|>
-  sum(Amount(n))|>
-  group_by(Fiscal.Year)
+zipcode_num_amount <- number_and_amount |>
+  
+  median_age <- get_acs(geography = "county")
   
 ```
-
