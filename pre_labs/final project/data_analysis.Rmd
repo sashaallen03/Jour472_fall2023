@@ -21,13 +21,17 @@ library(tidycensus)
 loans_data <- read.csv ("data/md_loan_data.csv")
 clean_names
 
+loans_data$zipcode <- substr(loans_data$Zip.Code, 1, 5)
+
+gdp_data <- read.csv ("data/gdp_growth.csv")
+
 census_api_key("c4b6d5f557fdd710f546c349eadd47d75c37b8aa", install=TRUE, overwrite=TRUE)
 readRenviron("~/.Renviron")
 
 Sys.getenv("CENSUS_API_KEY")
 ```
 
-Question: How has the amount of grants and loans handed out changed over time? (Since we have data since FY2009)
+Question 1: How has the amount of grants and loans handed out changed over time? (Since we have data since FY2009)
 
 Findings: We found that 2020 was the year that the most grants and loans were distributed, and where the most money was spent. This could be due to a surplus in government spending during the pandemic, because so many things were shut down.
 
@@ -48,7 +52,7 @@ number_and_amount <- number_loans_overtime |>
 
 ```
 
-Question: What zip codes or counties receive the most grants from the state of Maryland and why?
+Question 2: What zip codes or counties receive the most grants from the state of Maryland and why?
 
 Limitations: Zipcodes include 6 and 9 digit codes
 
@@ -59,9 +63,23 @@ zipcode_organization <- loans_data |>
   arrange(desc(Zip_Sum))
 ```
 
+Question 3:
+
 ```{r}
+zipcode_organization <- loans_data |>
+  group_by(zip.code)|>
+  summarize(zip_sum = sum(amount)) |>
+  arrange(desc(zip_sum))
+
+
+
 zipcode_num_amount <- number_and_amount |>
-  
   median_age <- get_acs(geography = "county")
   
+```
+
+Question 4: What do loans and grants look like in times of recession vs economic success?
+
+```{r}
+
 ```
