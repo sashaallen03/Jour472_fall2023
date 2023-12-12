@@ -23,7 +23,7 @@ clean_names
 
 loans_data$zipcode <- substr(loans_data$Zip.Code, 1, 5)
 
-gdp_data <- read.csv ("data/gdp_growth.csv")
+#gdp_data <- read.csv ("data/gdp_growth.csv")
 
 census_api_key("c4b6d5f557fdd710f546c349eadd47d75c37b8aa", install=TRUE, overwrite=TRUE)
 readRenviron("~/.Renviron")
@@ -52,6 +52,18 @@ number_and_amount <- number_loans_overtime |>
 
 ```
 
+```{r}
+number_and_amount |>
+  ggplot() +
+  geom_point(aes(x=Fiscal.Year,y=Number_Given)) +
+  geom_smooth(aes(x=Fiscal.Year,y=Number_Given), method="lm")
+
+```
+
+```{r}
+cor.test(number_and_amount$Number_Given, number_and_amount$Fiscal.Year)
+```
+
 Question 2: What zip codes or counties receive the most grants from the state of Maryland and why?
 
 Limitations: Zipcodes include 6 and 9 digit codes
@@ -73,13 +85,13 @@ zipcode_organization <- loans_data |>
 
 
 
-zipcode_num_amount <- number_and_amount |>
-  median_age <- get_acs(geography = "county")
+zipcode_organization <- get_acs(geography = "county") |>
   
 ```
 
 Question 4: What do loans and grants look like in times of recession vs economic success?
 
 ```{r}
+
 
 ```

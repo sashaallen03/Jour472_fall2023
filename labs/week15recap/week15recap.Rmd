@@ -1,0 +1,163 @@
+---
+title: "week15_recap"
+author: "Daniel Trielli"
+date: "2023-12-05"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+# Turn off scientific notation
+options(scipen=999)
+```
+
+## Loading the packages
+
+Run the codeblock below to load the packages we will need for this recap
+
+```{r}
+library(tidyverse)
+library(lubridate)
+library(janitor)
+library(tigris)
+library(tidycensus)
+library(corrr)
+```
+
+## Load Data
+
+[USAFacts compiled data on inspections on child care facilities throughout the country](https://usafacts.org/data-projects/childcare-inspections) - specifically, how many of those facilities are overdue for inspection. Let's take a look on the data they have on Maryland.
+
+First, here the data we need to load:
+
+```{r}
+childcare_inspections <- read_csv('data/childcare_inspections.csv')
+childcare_inspections$fips <- as.character(childcare_inspections$fips)
+```
+
+#### **Q1** The childcare data does not have the names of the counties. Join them with the md_counties data, that can be loaded in the block below. Then inspect the dataframe you created with this join and answer this: there are two columns with county names in the new dataframe. Which one is the best to be used? (hint: it has to do with homonyms)
+
+```{r}
+# This loads the county data
+md_counties <- counties() |>  filter(STATEFP == "24")
+```
+
+```{r}
+# Join the childcare data with the county data 
+childcare_inspections <- md_counties |>
+  inner_join(childcare_inspections, by=c('GEOID' = 'fips'))
+
+```
+
+##### A1: This joined the data with the county data, adding a spot for geometry which allows for us to create a map or graph on this.
+
+------------------------------------------------------------------------
+
+#### **Q2** Create bar chart with the percentages of overdue childcare facility inspections per county to answer (You'll need to create a column for that calculation first). What is the county with the largest percentage of facilities with overdue inspections?
+
+```{r}
+# Calculate the percentage of overdue inspections per county
+percent_childcare_inspections <- childcare_inspections |>
+  mutate(overdue_percentage = (overdue/total)*100) 
+  
+percent_childcare_inspections |>
+  ggplot() +
+  geom_bar(aes(x=reorder(NAMELSAD, overdue_percentage), weight = overdue_percentage))+
+    coord_flip()+
+    labs(
+      title = "Percentage of overdue childcare facility inspections per county",
+      x = "County",
+      y = "Percentage Overdue"
+    )
+
+# Create the chart with ggplot
+```
+
+##### **A2: We see that Montgomery County has the highest percentage of overdue childcare facility inspections compared to the rest of the state. Four counties had no overdue childcare facilities in their county.**
+
+------------------------------------------------------------------------
+
+#### **Q3** Next, we want to see if the number of child care facilities - with overdue inspections or otherwise - is appropriate for each county. So we're going to calculate the rate of children per facility per county. To do that, you'll first need Census data to get the population of children under 5 for each county. Which county has the biggest rate of children per facility (i.e. they could use more facilities)?
+
+```{r}
+# First, grab data from the ACS. The ACS variable for children age under 5 is B06001_002 We want 2022 data.
+percent_childcare_inspections <- get_acs(geography = "county",variables="B06001_002",year=2022,state="MD")
+
+```
+
+```{r}
+# Rename the column name 'estimate', which has our population data, with something more useful, like 'children_pop'
+
+ percent_childcare_inspections <- percent_childcare_inspections |>
+  rename("children_pop" = estimate)
+
+```
+
+```{r}
+# Join the dataframes
+childcare_inspections <- childcare_inspections |> left_join(percent_childcare_inspections, 'GEOID')
+  
+
+# Calculate the rates for children per facility
+
+```
+
+```{r}
+childcare_inspections <- childcare_inspections |>
+  mutate(rate = children_pop.y/total)
+```
+
+##### **A3: Garrett County**
+
+------------------------------------------------------------------------
+
+#### **Q4** Make a map of the results for question 3. Are there any areas of the state that are more lacking in childcare facilities?
+
+```{r}
+md_counties |>
+  ggplot()+
+  geom_sf(data = childcare_inspections, aes(fill=rate))+
+  theme_minimal()
+```
+
+##### **A4**: The childcare facilities on the edges of the state and a bit towards the center have more children in each of their facilities
+
+------------------------------------------------------------------------
+
+#### **Q5** Now let's explore if we can find patterns in under-served areas, particularly when it comes to median income of the population. First, join the childcare data median income data from the Census. Then, create a scatterplot and perform a cor.test(), and answer: is there is any correlation between income and rate of children per facilities? What makes you conclude that?
+
+```{r}
+# Again, grab data from the ACS. The ACS variable for median income is B19013_001. We want 2022 data again.
+acs_income <- get_acs(geography = "county",variables="B19013_001",year=2022,state="MD")
+
+```
+
+```{r}
+# Rename the column name 'estimate', which has our income data, with something more useful, like 'median_income'
+acs_income <- acs_income |>
+  rename("median_income" = estimate)
+```
+
+```{r}
+# Join the dataframes
+acs_income <- acs_income|> left_join(median_income, 'GEOID')
+```
+
+```{r}
+# Create a scatterplot with median income and rate of children per facility
+acs_income |>
+  ggplot() +
+  geom_point(aes(x=median_income,y=rate)) +
+  geom_smooth(aes(x=median_income,y=gdp_growth_2021), method="lm")
+
+```
+
+```{r}
+# Create a correlation test.
+cor.test(acs_income$median_income, acs_income$rate)
+
+```
+
+##### A5:
+
+------------------------------------------------------------------------
